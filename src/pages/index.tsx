@@ -11,12 +11,20 @@ export default function Home() {
     new Customer('Arlete', 84, '5')
   ]
 
+  function selectedCustomer(customer: Customer) {
+    console.log(customer.name)
+  }
+
+  function deletedCustomer(customer: Customer) {
+    console.log(`Excluir: ${customer.name}`)
+  }
+
   return (
     <div className={`
       flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500 text-white
     `}>
       <Layout title="Cadastro Simples">
-        <Table customers={customers}></Table>
+        <Table customers={customers} selectedCustomer={selectedCustomer} deletedCustomer={deletedCustomer}></Table>
       </Layout>
     </div>
   )
