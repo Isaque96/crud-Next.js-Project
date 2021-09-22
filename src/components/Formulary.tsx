@@ -5,6 +5,8 @@ import Button from "./Button";
 
 interface FormularyProps {
  customer: Customer;
+ changedCustomer?: (customer: Customer) => void;
+ cancelled?: () => void;
 }
 
 export default function Formulary(props: FormularyProps) {
@@ -20,10 +22,10 @@ export default function Formulary(props: FormularyProps) {
       <Input text="Nome" value={name} changedValue={setName} className="mb-4" />
       <Input text="Idade" type="number" value={age} changedValue={setAge} />
       <div className="flex justify-end mt-7">
-        <Button color="blue" className="mr-2">
+        <Button color="blue" className="mr-2" onClick={() => props.changedCustomer?.(new Customer(name, +age, id))}>
           {id ? 'Alterar' : 'Salvar'}
         </Button>
-        <Button color="gray">
+        <Button onClick={props.cancelled} color="gray">
           Cancelar
         </Button>
       </div>
