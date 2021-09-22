@@ -1,29 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Formulary from "../components/Formulary";
 import Button from "../components/Button";
 import Customer from "../core/Customer";
+import CustomerRepository from "../core/CustomerRepository";
+import CustomerCollection from "../backend/db/CustomerCollection";
 
 export default function Home() {
+  const repo: CustomerRepository = new CustomerCollection();
+
   const [customer, setCustomer] = useState<Customer>(Customer.empty());
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [visible, setVisible] = useState<'table' | 'formulary'>('table');
 
-  const customers = [
-    new Customer('Isaque', 25, '1'),
-    new Customer('Isabela', 19, '2'),
-    new Customer('Maurício', 54, '3'),
-    new Customer('Elisana', 51, '4'),
-    new Customer('Arlete', 84, '5')
-  ]
+  useEffect(getAll, []);
+
+  function getAll() {
+    repo.getAll().then(customers => {
+      setCustomers(customers);
+      setVisible('table');
+    })
+  }
 
   function selectedCustomer(customer: Customer) {
     setCustomer(customer);
     setVisible('formulary');
   }
 
-  function deletedCustomer(customer: Customer) {
-    console.log(`Excluir: ${customer.name}`);
+  async function deletedCustomer(customer: Customer) {
+    await repo.delete(customer);
+    getAll();
   }
 
   function newCustomer() {
@@ -31,9 +38,9 @@ export default function Home() {
     setVisible('formulary');
   }
   
-  function saveCustomer(customer: Customer) {
-    console.log(customer);
-    setVisible('table');
+  async function saveCustomer(customer: Customer) {
+    await repo.save(customer);
+    getAll();
   }
   
   return (
