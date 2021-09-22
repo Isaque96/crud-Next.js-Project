@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import Table from "../components/Table";
+import Formulary from "../components/Formulary";
 import Button from "../components/Button";
 import Customer from "../core/Customer";
 
@@ -26,9 +27,10 @@ export default function Home() {
     `}>
       <Layout title="Cadastro Simples">
         <div className="flex justify-end">
-          <Button cor="green" className="mb-4">Novo Cliente</Button>
+          <Button color="green" className="mb-4">Novo Cliente</Button>
         </div>
         <Table customers={customers} selectedCustomer={selectedCustomer} deletedCustomer={deletedCustomer}></Table>
+        <Formulary customer={customers[0]}></Formulary>
       </Layout>
     </div>
   )
